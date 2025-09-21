@@ -1,4 +1,6 @@
+// ================================
 // Estado global da aplicação
+// ================================
 let appState = {
   user: {
     name: '',
@@ -16,7 +18,9 @@ let appState = {
   templateVariables: {}
 };
 
+// ================================
 // Inicialização da aplicação
+// ================================
 document.addEventListener('DOMContentLoaded', function() {
   loadUserData();
   initializeNavigation();
@@ -30,7 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
   showPage('home');
 });
 
-// Gerenciamento de dados do usuário
+// ================================
+/* Gerenciamento de dados do usuário */
+// ================================
 function loadUserData() {
   const savedData = localStorage.getItem('ia-academy-progress');
   if (savedData) {
@@ -47,7 +53,9 @@ function saveUserData() {
   localStorage.setItem('ia-academy-progress', JSON.stringify(appState.user));
 }
 
-// Navegação
+// ================================
+/* Navegação */
+// ================================
 function initializeNavigation() {
   const navLinks = document.querySelectorAll('.nav-link');
   const mobileMenuToggle = document.getElementById('mobileMenuToggle');
@@ -58,9 +66,7 @@ function initializeNavigation() {
       e.preventDefault();
       const page = link.getAttribute('data-page');
       showPage(page);
-      
-      // Fechar menu mobile
-      navMenu.classList.remove('active');
+      navMenu.classList.remove('active'); // Fechar menu mobile
     });
   });
   
@@ -86,7 +92,8 @@ function showPage(pageId) {
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
     });
-    document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+    const activeLink = document.querySelector(`[data-page="${pageId}"]`);
+    if (activeLink) activeLink.classList.add('active');
     
     // Carregar conteúdo específico da página
     switch(pageId) {
@@ -109,7 +116,9 @@ function showPage(pageId) {
   }
 }
 
-// Tema
+// ================================
+/* Tema */
+// ================================
 function initializeTheme() {
   const themeToggle = document.getElementById('themeToggle');
   const themeIcon = themeToggle.querySelector('.theme-icon');
@@ -135,7 +144,9 @@ function initializeTheme() {
   });
 }
 
-// Onboarding
+// ================================
+/* Onboarding */
+// ================================
 function initializeOnboarding() {
   const userNameInput = document.getElementById('userName');
   const startJourneyBtn = document.getElementById('startJourney');
@@ -174,7 +185,9 @@ function initializeOnboarding() {
   });
 }
 
-// Página da Trilha
+// ================================
+/* Página da Trilha */
+// ================================
 function loadTrailsPage() {
   updateProgressDisplay();
   renderTrails();
@@ -198,13 +211,30 @@ function renderTrails() {
   const trailsGrid = document.getElementById('trailsGrid');
   trailsGrid.innerHTML = '';
   
-  courseData.trail.forEach((trail, index) => {
+  courseData.trail.forEach((trail) => {
     const isCompleted = appState.user.completedTrails.includes(trail.id);
     const isLocked = trail.id > 1 && !appState.user.completedTrails.includes(trail.id - 1);
     
     const trailCard = document.createElement('div');
     trailCard.className = `trail-card ${isLocked ? 'locked' : ''}`;
     
+    // Definir as ações conforme o estado
+    let actionsHTML = '';
+    if (isCompleted) {
+      actionsHTML = `
+        <div class="status-line">✅ Concluída</div>
+        <button class="btn btn-secondary" onclick="openTrailModal(${trail.id}, { review: true })">Revisar</button>
+      `;
+    } else if (isLocked) {
+      actionsHTML = `
+        <button class="btn btn-secondary" disabled>🔒 Complete a fase anterior para desbloquear</button>
+      `;
+    } else {
+      actionsHTML = `
+        <button class="btn btn-primary" onclick="openTrailModal(${trail.id})">Começar</button>
+      `;
+    }
+
     trailCard.innerHTML = `
       <div class="trail-header">
         <div class="trail-icon">${trail.icon}</div>
@@ -219,12 +249,7 @@ function renderTrails() {
         </div>
       </div>
       <div class="trail-actions">
-        ${isCompleted ? 
-          '<button class="btn btn-secondary" disabled>✅ Concluída</button>' :
-          isLocked ? 
-            '<button class="btn btn-secondary" disabled>🔒 Complete a fase anterior para desbloquear</button>' :
-            '<button class="btn btn-primary" onclick="openTrailModal(' + trail.id + ')">Começar</button>'
-        }
+        ${actionsHTML}
       </div>
     `;
     
@@ -232,9 +257,13 @@ function renderTrails() {
   });
 }
 
-function openTrailModal(trailId) {
+// Aceita um segundo parâmetro opcional { review: true } para modo revisão
+function openTrailModal(trailId, opts = {}) {
   const trail = courseData.trail.find(t => t.id === trailId);
   if (!trail) return;
+  
+  const isCompleted = appState.user.completedTrails.includes(trailId);
+  const reviewMode = !!opts.review || isCompleted;
   
   const modal = document.getElementById('trailModal');
   const modalTitle = document.getElementById('modalTitle');
@@ -245,6 +274,14 @@ function openTrailModal(trailId) {
   
   // Renderizar conteúdo
   let contentHTML = '';
+  if (reviewMode) {
+    contentHTML += `
+      <div class="banner info" style="margin-bottom:12px">
+        📚 Você está revisando esta fase. O conteúdo fica sempre acessível.
+      </div>
+    `;
+  }
+  
   trail.content.forEach(item => {
     switch(item.type) {
       case 'text':
@@ -262,8 +299,14 @@ function openTrailModal(trailId) {
   
   modalBody.innerHTML = contentHTML;
   
-  // Configurar botão de completar
-  completeBtn.onclick = () => completeTrail(trailId);
+  // Botão de concluir só aparece se ainda não concluiu
+  if (reviewMode) {
+    completeBtn.classList.add('hidden');
+    completeBtn.onclick = null;
+  } else {
+    completeBtn.classList.remove('hidden');
+    completeBtn.onclick = () => completeTrail(trailId);
+  }
   
   modal.classList.add('active');
 }
@@ -274,7 +317,11 @@ function closeModal() {
 
 function completeTrail(trailId) {
   const trail = courseData.trail.find(t => t.id === trailId);
-  if (!trail || appState.user.completedTrails.includes(trailId)) return;
+  // evita XP duplicado
+  if (!trail || appState.user.completedTrails.includes(trailId)) {
+    closeModal();
+    return;
+  }
   
   // Adicionar à lista de concluídas
   appState.user.completedTrails.push(trailId);
@@ -306,7 +353,7 @@ function checkAndAwardBadges() {
   }
   
   // Mestre da Trilha
-  if (completedCount >= 5 && !appState.user.badges.includes('trail-master')) {
+  if (completedCount >= courseData.trail.length && !appState.user.badges.includes('trail-master')) {
     appState.user.badges.push('trail-master');
     showToast('🏆 Badge conquistado: Mestre da Trilha!', 'success');
   }
@@ -318,7 +365,9 @@ function checkAndAwardBadges() {
   }
 }
 
-// Quiz
+// ================================
+/* Quiz */
+// ================================
 function loadQuizPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const trailId = parseInt(urlParams.get('trail')) || 1;
@@ -371,7 +420,7 @@ function renderQuizQuestion() {
       <h2>${question.question}</h2>
       <div class="quiz-options" id="quizOptions">
         ${question.options.map((option, index) => `
-          <button class="quiz-option" onclick="selectQuizAnswer('${option}', ${index})">
+          <button class="quiz-option" onclick="selectQuizAnswer('${option.replace(/'/g, "\\'")}', ${index})">
             ${option}
           </button>
         `).join('')}
@@ -492,7 +541,9 @@ function retryQuiz() {
   renderQuizQuestion();
 }
 
-// Laboratório
+// ================================
+/* Laboratório */
+// ================================
 function initializeLaboratory() {
   // Será inicializado quando a página for carregada
 }
@@ -541,7 +592,10 @@ function selectTemplate(templateId) {
   document.querySelectorAll('.template-item').forEach(item => {
     item.classList.remove('active');
   });
-  event.target.closest('.template-item').classList.add('active');
+  if (event && event.target) {
+    const el = event.target.closest('.template-item');
+    if (el) el.classList.add('active');
+  }
   
   renderTemplateEditor();
 }
@@ -639,7 +693,9 @@ function clearTemplate() {
   });
 }
 
-// Glossário
+// ================================
+/* Glossário */
+// ================================
 function initializeGlossary() {
   // Será inicializado quando a página for carregada
 }
@@ -745,7 +801,9 @@ function clearGlossaryFilters() {
   renderGlossaryTerms();
 }
 
-// Dashboard
+// ================================
+/* Dashboard */
+// ================================
 function loadDashboardPage() {
   updateDashboardStats();
   renderUserBadges();
@@ -825,15 +883,15 @@ function updateExportSection() {
   }
 }
 
+// Simulação de PDF (troque por jsPDF/html2canvas se quiser PDF real)
 function generatePDF() {
   showToast('Gerando PDF... 📄', 'info');
   
-  // Simular geração de PDF (em uma implementação real, usaria jsPDF)
   setTimeout(() => {
     const pdfContent = generatePDFContent();
-    downloadPDF(pdfContent, `Guia_Express_IA_${appState.user.name.replace(/\s+/g, '_')}.txt`);
+    downloadPDF(pdfContent, `Guia_Express_IA_${(appState.user.name || 'Aluno').replace(/\s+/g, '_')}.txt`);
     showToast('PDF gerado com sucesso! 🎉', 'success');
-  }, 2000);
+  }, 800);
 }
 
 function generatePDFContent() {
@@ -841,7 +899,7 @@ function generatePDFContent() {
 GUIA EXPRESS DE IA
 Certificado de Conclusão
 
-Nome: ${appState.user.name}
+Nome: ${appState.user.name || 'Aluno'}
 XP Total: ${appState.user.xp}
 Fases Concluídas: ${appState.user.completedTrails.length}/${courseData.trail.length}
 Data de Conclusão: ${new Date().toLocaleDateString('pt-BR')}
@@ -864,13 +922,13 @@ RESUMO DO CONTEÚDO APRENDIDO:
 • Uso ético e responsável da IA
 • Privacidade e segurança em IA
 
-DICAS RÁPIDAS PARA USAR IA:
-• Seja específico em seus prompts
-• Forneça contexto adequado
-• Verifique sempre as informações geradas
+DICAS RÁPIDAS:
+• Seja específico nos prompts
+• Forneça contexto
+• Verifique as informações
 • Respeite a privacidade e direitos autorais
-• Use a IA como ferramenta de apoio, não substituição
-• Continue aprendendo e experimentando
+• Use a IA como apoio, não substituto
+• Continue aprendendo
 
 IA Academy - Curso Gamificado de Inteligência Artificial
   `;
@@ -888,12 +946,14 @@ function downloadPDF(content, filename) {
   window.URL.revokeObjectURL(url);
 }
 
-// Utilitários
+// ================================
+/* Utilitários */
+// ================================
 function updateUI() {
   // Atualizar nome do usuário em todos os lugares
   const userNameElements = document.querySelectorAll('[id*="userName"], [id*="UserName"]');
   userNameElements.forEach(element => {
-    if (element.textContent !== undefined) {
+    if (element && element.textContent !== undefined) {
       element.textContent = appState.user.name || 'Aluno';
     }
   });
@@ -901,7 +961,8 @@ function updateUI() {
 
 function showToast(message, type = 'info') {
   const toastContainer = document.getElementById('toastContainer');
-  
+  if (!toastContainer) return;
+
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.innerHTML = `
@@ -919,14 +980,18 @@ function showToast(message, type = 'info') {
 }
 
 function showLoading() {
-  document.getElementById('loadingSpinner').classList.remove('hidden');
+  const el = document.getElementById('loadingSpinner');
+  if (el) el.classList.remove('hidden');
 }
 
 function hideLoading() {
-  document.getElementById('loadingSpinner').classList.add('hidden');
+  const el = document.getElementById('loadingSpinner');
+  if (el) el.classList.add('hidden');
 }
 
-// Event Listeners globais
+// ================================
+/* Event Listeners globais */
+// ================================
 document.addEventListener('click', (e) => {
   // Fechar modal clicando fora
   if (e.target.classList.contains('modal')) {
