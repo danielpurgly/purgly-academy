@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Curso interativo e gamificado de Introdução à Inteligência Artificial para crianças e adultos">
+    <meta name="keywords" content="inteligência artificial, IA, curso, gamificado, educação, aprendizado, machine learning">
+    <meta name="author" content="IA Academy">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="IA Academy">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="IA Academy - Curso Gamificado de Inteligência Artificial">
+    <meta property="og:description" content="Descubra o fascinante mundo da IA através de uma jornada gamificada, interativa e divertida!">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    
+    <title>IA Academy - Curso Gamificado de Inteligência Artificial</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="quiz-styles.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js">
+</head>
+<body>
+    <!-- Skip Link para acessibilidade -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Navegação principal">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="nav-logo">🤖</span>
+                <span class="nav-title">IA Academy</span>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active" data-page="home">
+                    <span class="nav-icon">🏠</span>
+                    <span>Início</span>
+                </a>
+                <a href="#trilha" class="nav-link" data-page="trilha">
+                    <span class="nav-icon">🗺️</span>
+                    <span>Trilha</span>
+                </a>
+                <a href="#quiz" class="nav-link" data-page="quiz">
+                    <span class="nav-icon">📝</span>
+                    <span>Quiz</span>
+                </a>
+                <a href="#laboratorio" class="nav-link" data-page="laboratorio">
+                    <span class="nav-icon">🧪</span>
+                    <span>Laboratório</span>
+                </a>
+                <a href="#glossario" class="nav-link" data-page="glossario">
+                    <span class="nav-icon">📚</span>
+                    <span>Glossário</span>
+                </a>
+                <a href="#painel" class="nav-link" data-page="painel">
+                    <span class="nav-icon">👤</span>
+                    <span>Painel</span>
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <div class="hero-icon">🤖</div>
+                    <h1 class="hero-title">
+                        Bem-vindo à <span class="highlight">IA Academy</span>
+                    </h1>
+                    <p class="hero-description">
+                        Descubra o fascinante mundo da Inteligência Artificial através de uma jornada gamificada, interativa e divertida!
+                    </p>
+                    
+                    <div class="onboarding-form" id="onboardingForm">
+                        <label for="userName" class="form-label">Como você gostaria de ser chamado(a)?</label>
+                        <input type="text" id="userName" class="form-input" placeholder="Digite seu nome ou apelido" maxlength="50">
+                        <button class="btn btn-primary" id="startJourney">Começar Jornada</button>
+                    </div>
+                    
+                    <div class="welcome-message hidden" id="welcomeMessage">
+                        <h2 class="welcome-title">Olá, <span id="userNameDisplay"></span>! 👋</h2>
+                        <p class="welcome-text">Sua jornada de aprendizado está pronta para começar!</p>
+                        <button class="btn btn-primary" onclick="showPage('trilha')">Ir para Trilha</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features-section">
+                <div class="container">
+                    <h2 class="section-title">Por que escolher a IA Academy?</h2>
+                    <p class="section-description">
+                        Uma experiência de aprendizado única que combina educação de qualidade com diversão e interatividade.
+                    </p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🎮</div>
+                            <h3 class="feature-title">Aprenda IA de Forma Divertida</h3>
+                            <p class="feature-description">Conceitos complexos explicados de maneira simples e envolvente</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">🏆</div>
+                            <h3 class="feature-title">Sistema de Gamificação</h3>
+                            <p class="feature-description">Ganhe XP, badges e acompanhe seu progresso</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">🧪</div>
+                            <h3 class="feature-title">Laboratório de Prompts</h3>
+                            <p class="feature-description">Pratique e experimente com diferentes técnicas de prompt</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">👥</div>
+                            <h3 class="feature-title">Para Todas as Idades</h3>
+                            <p class="feature-description">Conteúdo adaptado para crianças e adultos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-section">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">Fases</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">10+</div>
+                                <div class="stat-label">Conceitos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">15+</div>
+                                <div class="stat-label">Quizzes</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">20+</div>
+                                <div class="stat-label">Templates</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trilha Page -->
+        <section id="trilha" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Módulo 1: Desvendando a Inteligência Artificial</h1>
+                    <p class="page-description">
+                        Uma jornada divertida para entender o que é IA, como ela funciona e como podemos usá-la no dia a dia.
+                    </p>
+                </div>
+                
+                <div class="progress-section">
+                    <h3>Seu Progresso</h3>
+                    <div class="progress-info">
+                        <span id="progressText">0 de 5 fases</span>
+                        <span id="progressPercentage">0% concluído</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="trails-grid" id="trailsGrid">
+                    <!-- Trails will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Page -->
+        <section id="quiz" class="page">
+            <div class="container">
+                <div id="quizContainer">
+                    <!-- Quiz content will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Laboratório Page -->
+        <section id="laboratorio" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <div class="page-icon">🧪</div>
+                    <h1 class="page-title">Laboratório de Prompts</h1>
+                    <p class="page-description">
+                        Experimente e aprenda a criar prompts eficazes usando nossos templates. Pratique a arte da engenharia de prompt!
+                    </p>
+                </div>
+                
+                <div class="lab-content">
+                    <div class="lab-categories">
+                        <button class="category-btn active" data-category="creative">
+                            <span class="category-icon">🎨</span>
+                            <span>Criativo</span>
+                        </button>
+                        <button class="category-btn" data-category="educational">
+                            <span class="category-icon">🎓</span>
+                            <span>Educacional</span>
+                        </button>
+                        <button class="category-btn" data-category="professional">
+                            <span class="category-icon">💼</span>
+                            <span>Profissional</span>
+                        </button>
+                        <button class="category-btn" data-category="analysis">
+                            <span class="category-icon">📊</span>
+                            <span>Análise</span>
+                        </button>
+                    </div>
+                    
+                    <div class="lab-main">
+                        <div class="templates-section">
+                            <h3>Templates Disponíveis</h3>
+                            <div id="templatesList">
+                                <!-- Templates will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="editor-section">
+                            <div id="templateEditor">
+                                <div class="editor-placeholder">
+                                    <div class="placeholder-icon">💡</div>
+                                    <h3>Selecione um Template</h3>
+                                    <p>Escolha um template da lista ao lado para começar a criar seu prompt</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips-section">
+                    <h2>Dicas para Prompts Eficazes</h2>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">🎯</div>
+                            <h3>Seja Específico</h3>
+                            <p>Quanto mais detalhes, melhor será o resultado</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">📝</div>
+                            <h3>Dê Contexto</h3>
+                            <p>Explique o cenário e o objetivo do seu prompt</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">💡</div>
+                            <h3>Use Exemplos</h3>
+                            <p>Mostre o tipo de resposta que você espera</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🔄</div>
+                            <h3>Teste e Ajuste</h3>
+                            <p>Experimente variações para melhorar os resultados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Glossário Page -->
+        <section id="glossario" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <div class="page-icon">📚</div>
+                    <h1 class="page-title">Glossário de IA</h1>
+                    <p class="page-description">
+                        Consulte termos e conceitos importantes do mundo da Inteligência Artificial
+                    </p>
+                </div>
+                
+                <div class="glossary-search">
+                    <div class="search-box">
+                        <input type="text" id="glossarySearch" placeholder="Buscar termos ou definições..." class="search-input">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    
+                    <div class="letter-filters">
+                        <span class="filter-label">Filtrar por letra:</span>
+                        <div id="letterFilters">
+                            <!-- Letter filters will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-count">
+                    <span id="resultsCount">10 termos encontrados</span>
+                </div>
+                
+                <div id="glossaryTerms" class="glossary-terms">
+                    <!-- Terms will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Painel Page -->
+        <section id="painel" class="page">
+            <div class="container">
+                <div class="dashboard-header">
+                    <div class="user-avatar">👤</div>
+                    <div class="user-info">
+                        <h1 class="dashboard-title">Olá, <span id="dashboardUserName">Aluno</span>! 👋</h1>
+                        <p class="dashboard-description">Acompanhe seu progresso na jornada de IA</p>
+                    </div>
+                </div>
+                
+                <div class="stats-dashboard">
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalXP">0</div>
+                            <div class="stat-label">XP Total</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="completedTrails">0/5</div>
+                            <div class="stat-label">Fases Concluídas</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalBadges">0</div>
+                            <div class="stat-label">Badges Conquistados</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="overallProgress">0%</div>
+                            <div class="stat-label">Progresso</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="progress-card">
+                        <h3>Progresso do Módulo 1</h3>
+                        <p>Seu avanço no curso de Introdução à IA</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="dashboardProgressFill" style="width: 0%"></div>
+                        </div>
+                        <div id="completionMessage" class="completion-message hidden">
+                            <div class="completion-icon">🏆</div>
+                            <div class="completion-text">
+                                <strong>Parabéns! Módulo Concluído!</strong>
+                                <p>Você completou todas as fases do Módulo 1. Agora você pode baixar seu Guia Express de IA!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badges-section" id="badgesSection">
+                        <h3>Suas Conquistas</h3>
+                        <div id="badgesList" class="badges-list">
+                            <!-- Badges will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="export-section">
+                        <h3>Exportar Certificado</h3>
+                        <p id="exportDescription">Complete todas as fases para desbloquear o certificado</p>
+                        <button class="btn btn-primary" id="exportPDF" disabled>
+                            <span class="btn-icon">📄</span>
+                            Baixar Guia Express de IA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="trailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Fechar</button>
+                <button class="btn btn-primary" id="completeTrailBtn" onclick="completeTrail()">Concluir Fase</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner hidden">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- JavaScript -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
