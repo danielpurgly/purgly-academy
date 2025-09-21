@@ -13,7 +13,7 @@ const courseData = {
       content: [
         {
           type: "text",
-          content: "A **Inteligência Artificial (IA)** é como dar superpoderes para os computadores! Imagine que você está ensinando um computador a pensar e tomar decisões como um ser humano."
+          content: "A Inteligência Artificial (IA) é como dar superpoderes para os computadores! Imagine que você está ensinando um computador a pensar e tomar decisões como um ser humano."
         },
         {
           type: "text",
@@ -22,11 +22,11 @@ const courseData = {
         {
           type: "list",
           items: [
-            "**Sistemas Baseados em Regras**: Como um livro de receitas que o computador segue à risca",
-            "**Aprendizado de Máquina**: O computador aprende sozinho observando exemplos",
-            "**Aprendizado Profundo**: Usa redes neurais artificiais inspiradas no cérebro humano",
-            "**IA Generativa**: Cria coisas novas como textos, imagens e músicas",
-            "**Agentes de IA**: Sistemas que agem de forma autônoma para atingir objetivos"
+            "Sistemas Baseados em Regras: Como um livro de receitas que o computador segue à risca",
+            "Aprendizado de Máquina: O computador aprende sozinho observando exemplos",
+            "Aprendizado Profundo: Usa redes neurais artificiais inspiradas no cérebro humano",
+            "IA Generativa: Cria coisas novas como textos, imagens e músicas",
+            "Agentes de IA: Sistemas que agem de forma autônoma para atingir objetivos"
           ]
         },
         {
@@ -45,11 +45,11 @@ const courseData = {
       content: [
         {
           type: "text",
-          content: "Você sabia que já usa IA todos os dias? Vamos descobrir os **superpoderes** da IA que estão ao nosso redor!"
+          content: "Você sabia que já usa IA todos os dias? Vamos descobrir os superpoderes da IA que estão ao nosso redor!"
         },
         {
           type: "text",
-          content: "**No seu celular:**"
+          content: "No seu celular:"
         },
         {
           type: "list",
